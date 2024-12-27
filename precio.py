@@ -41,7 +41,7 @@ rangos_valores = {
     (1000, 2000): 33608,
 }
 
-# Leer el archivo Excel Leer el archivo Excel
+# Leer el archivo Excel
 df = pd.read_excel(ruta_excel)
 
 # Convertir la columna "Tabla2.precio" a numérica
