@@ -1,0 +1,36 @@
+PROMPTS
+
+/////////////////////////////////TEXTO/////////////////////////////////
+
+Compatibilidad: 
+
+extrae solamente la autoparte de cada uno de los siguientes titulos en espanol mexicano (no usar las palabras , de , para , del , par , kit , set , delantero , trasero , frontal , izquierdo , derecho , inferior , superior , escape , admision)(no incluir ningun numero de parte):
+
+Unicas:
+
+traduce y resume a 55-60 o menos caracteres contado los espacios como caracter el siguiente titulo a espanol mexicano (no incluyas numeros de autoparte)(no usar las palabras , de , para,con,nuevo,original,compatible)(no usar /,+,())(incluye años si es posible)(utliza reglas gramaticales)(estructura el titulo de la siguiente forma: autoparte+caracteristicas+modelo+año)
+
+traduce y resume a 55-60 o menos caracteres contado los espacios como caracter el siguiente titulo a espanol mexicano (no incluyas numeros de autoparte)(no usar las palabras , de , para,con,nuevo,original,compatible)(no usar /,+,())(incluye años si es posible)(utliza reglas gramaticales)(estructura el titulo de la siguiente forma: autoparte+caracteristicas+marca del vehiculo+modelo+año)
+
+----------------------------
+
+traduce y resume a 55-60 o menos caracteres contado los espacios como caracter el siguiente titulo a espanol mexicano (no incluyas numeros de autoparte)(no usar las palabras , de , para,con,nuevo,original,compatible)(no usar /,+,())(incluye años si es posible)(utliza reglas gramaticales)(estructura el titulo de la siguiente forma: autoparte+caracteristicas+especificaciones+marca del vehiculo+modelo+año+litros)
+
+----------------------------
+
+Traduce este título (máx. 60 caracteres, sin números de parte ni "de", "para", "con", "nuevo", "original", "compatible", "/", "+", "()"): Autoparte+Características+Especificaciones+Marca+Modelo+Año+Litros.
+
+*********************************VISION********************************
+
+Vision: 
+
+tell me if this auto part has logos and letters written outside the auto part
+
+Vision Mejorada: 
+
+tell me only if the image has logos outside the product you offer
+
+
+
+**Utilizar Gemini 1.5 Flash para fotos**
+**Utilizar Gemini 1.5 Pro para texto**
