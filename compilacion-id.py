@@ -1,32 +1,49 @@
-import glob
 import os
+from openpyxl import load_workbook
 import pandas as pd
 
-# Ruta a la carpeta con los archivos CSV
-ruta_carpeta = r'C:\Users\rodri\Downloads\compilacion'
+# Ruta de la carpeta con los archivos Excel
+ruta_carpeta = r"C:\Users\rodri\Downloads\compilacion"
 
-# Lista para almacenar los DataFrames de cada archivo
-dfs = []
+# Lista para almacenar los datos combinados
+datos_combinados = []
 
-# Recorre todos los archivos CSV en la carpeta
-for archivo in glob.glob(os.path.join(ruta_carpeta, "*.csv")):
-    try:
-        # Lee el archivo CSV, seleccionando las columnas desde 'A' hasta 'H'
-        df = pd.read_csv(archivo, usecols=range(8))  # Selecciona las primeras 8 columnas (A-H)
-        dfs.append(df)
-    except Exception as e:
-        print(f"Error al leer el archivo {archivo}: {e}")
+# Columnas a extraer (basadas en índices de Excel: A=0, E=4, F=5, G=6, T=19, U=20)
+columnas_a_extraer = [0, 4, 5, 6, 19, 20]
 
-# Concatena todos los DataFrames en uno solo
-df_combinado = pd.concat(dfs, ignore_index=True)
+# Recorre todos los archivos .xlsx en la carpeta
+for archivo in os.listdir(ruta_carpeta):
+    if archivo.endswith(".xlsx"):
+        ruta_archivo = os.path.join(ruta_carpeta, archivo)
+        try:
+            wb = load_workbook(ruta_archivo, data_only=True)
 
-# Elimina filas con valores NaN en todas las columnas (opcional)
-df_combinado.dropna(how='all', inplace=True)
+            # Recorre todas las hojas del archivo
+            for hoja in wb.sheetnames:
+                if hoja == "MLM-CARS_AND_VANS":  # Saltar la hoja especificada
+                    continue
 
-# Guarda el DataFrame combinado en un nuevo archivo CSV
-ruta_salida = os.path.join(ruta_carpeta, "terminado.csv")
-try:
-    df_combinado.to_csv(ruta_salida, index=False)
-    print(f"Archivo 'terminado.csv' creado exitosamente en {ruta_carpeta}")
-except Exception as e:
-    print(f"Error al guardar el archivo: {e}")
+                ws = wb[hoja]
+                datos_hoja = []
+
+                # Extraer datos de las columnas especificadas
+                for fila in ws.iter_rows(min_row=2, values_only=True):  # Saltar la fila de encabezados
+                    fila_extraida = [fila[i] for i in columnas_a_extraer if i < len(fila)]
+                    datos_hoja.append(fila_extraida)
+
+                # Agregar los datos de la hoja a la lista principal
+                datos_combinados.extend(datos_hoja)
+
+        except Exception as e:
+            print(f"Error al procesar el archivo {archivo}: {e}")
+
+# Crear un DataFrame con los datos combinados
+df_combinado = pd.DataFrame(datos_combinados, columns=["A", "E", "F", "G", "T", "U"])
+
+# Dividir el DataFrame en partes de 500,000 filas y guardar en un archivo Excel
+ruta_salida = os.path.join(ruta_carpeta, "combinado.xlsx")
+with pd.ExcelWriter(ruta_salida, engine="openpyxl") as writer:
+    for i in range(0, len(df_combinado), 500000):
+        df_combinado.iloc[i:i+500000].to_excel(writer, sheet_name=f"Parte_{i//500000 + 1}", index=False)
+
+print(f"Archivo combinado guardado en: {ruta_salida}")
