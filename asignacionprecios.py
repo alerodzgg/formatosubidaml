@@ -82,12 +82,12 @@ for index, row in df.iterrows():
     for rango, valor_nuevo_base in rangos_valores.items():
         inicio, fin = rango
         if inicio <= valor_original <= fin:
-            # Generar un nuevo valor aleatorio sumando un número entre 100 y 199
-            nuevo_valor = valor_nuevo_base + random.randint(100, 199)
+            # Generar un nuevo valor aleatorio sumando un número entre 1 y 49
+            nuevo_valor = valor_nuevo_base + random.randint(1, 49)
 
             # Asegurarse de que el nuevo valor sea diferente al original
             while nuevo_valor == valor_original:
-                nuevo_valor = valor_nuevo_base + random.randint(100, 199)
+                nuevo_valor = valor_nuevo_base + random.randint(1, 49)
 
             # Actualizar el valor en el DataFrame
             df.loc[index, columna_a_actualizar] = nuevo_valor
