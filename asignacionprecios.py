@@ -4,7 +4,7 @@ import pandas as pd
 # Ruta del archivo Excel
 ruta_excel = "C:\\Users\\rodri\\Downloads\\publicaciones.xlsx"
 
-# Diccionario de rangos y valores para actualizar la columna "Tabla2.precio"
+# Diccionario de rangos y valores para actualizar la columna "Precio"
 rangos_valores = {
     (1, 14): 5749,
     (15, 19): 6472,
@@ -72,7 +72,11 @@ rangos_valores = {
 df = pd.read_excel(ruta_excel)
 
 # Columna a actualizar
-columna_a_actualizar = 'Tabla2.precio'
+columna_a_actualizar = 'Precio'
+nueva_columna = 'Precio1'
+
+# Crear la nueva columna con los valores actualizados
+nueva_columna_valores = df[columna_a_actualizar].copy()  # Copiar los valores originales
 
 # Iterar sobre las filas del DataFrame
 for index, row in df.iterrows():
@@ -89,11 +93,15 @@ for index, row in df.iterrows():
             while nuevo_valor == valor_original:
                 nuevo_valor = valor_nuevo_base + random.randint(1, 49)
 
-            # Actualizar el valor en el DataFrame
-            df.loc[index, columna_a_actualizar] = nuevo_valor
+            # Actualizar el valor en la nueva columna
+            nueva_columna_valores[index] = nuevo_valor
             break  # Importante: salir del bucle interno una vez encontrado el rango
+
+# Insertar la nueva columna a la derecha de la columna "Precio"
+posicion_precio = df.columns.get_loc(columna_a_actualizar) + 1
+df.insert(posicion_precio, nueva_columna, nueva_columna_valores)
 
 # Guardar los cambios en el archivo Excel original
 df.to_excel(ruta_excel, index=False)
 
-print("Los valores de la columna 'Tabla2.precio' se han actualizado correctamente.")
+print(f"Los valores de la columna '{columna_a_actualizar}' se han actualizado en la nueva columna '{nueva_columna}'.")
